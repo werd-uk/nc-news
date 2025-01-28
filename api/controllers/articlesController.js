@@ -14,4 +14,14 @@ exports.getArticleByID = (req, res, next) => {
         });
 };
 
-exports.getArticles = () => {};
+exports.getArticles = (req, res, next) => {
+    const { order, sort_by, topic, author } = req.query;
+    const where = { topic, author };
+    return selectArticles(where, order, sort_by)
+        .then((response) => {
+            return res.status(200).send(response);
+        })
+        .catch((err) => {
+            next(err);
+        });
+};

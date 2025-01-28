@@ -26,7 +26,7 @@ describe("GET /api/topics", () => {
     });
 });
 
-describe("GET /api/articles/1", () => {
+describe("GET /api/articles/:id", () => {
     test("200: responds with article ID #1", () => {
         return request(app)
             .get("/api/articles/1")
@@ -74,6 +74,120 @@ describe("GET /api/articles/1", () => {
                 .expect(404)
                 .then((response) => {
                     expect(response.body).toEqual({ msg: "No article found", detail: "Article #999 does not exist" });
+                });
+        });
+    });
+});
+
+describe("GET /api/articles", () => {
+    test("200: Gets a successful response from the endpoint", () => {
+        return request(app).get("/api/articles").expect(200);
+    });
+    test("200: Gets an array of data from the endpoint, complete with comments", () => {
+        return request(app)
+            .get("/api/articles")
+            .expect(200)
+            .then((response) => {
+                const rows = response.body.rows;
+                expect(rows.length).toEqual(13);
+                rows.forEach((row) => {
+                    expect(row).toHaveProperty("author");
+                    expect(row).toHaveProperty("title");
+                    expect(row).toHaveProperty("article_id");
+                    expect(row).toHaveProperty("topic");
+                    expect(row).toHaveProperty("votes");
+                    expect(row).toHaveProperty("article_img_url");
+                    expect(row).toHaveProperty("comment_count");
+                });
+            });
+    });
+    test("200: Gets an array of data, with sort by comment_count DESC", () => {
+        return request(app)
+            .get("/api/articles?sort_by=comment_count&order=DESC")
+            .expect(200)
+            .then((response) => {
+                const rows = response.body.rows;
+                expect(rows.length).toEqual(13);
+                expect(rows).toBeSortedBy("comment_count", { descending: true });
+                rows.forEach((row) => {
+                    expect(row).toHaveProperty("author");
+                    expect(row).toHaveProperty("title");
+                    expect(row).toHaveProperty("article_id");
+                    expect(row).toHaveProperty("topic");
+                    expect(row).toHaveProperty("votes");
+                    expect(row).toHaveProperty("article_img_url");
+                    expect(row).toHaveProperty("comment_count");
+                });
+            });
+    });
+    test("200: Gets an array of data based on matching topic", () => {
+        return request(app)
+            .get("/api/articles?topic=mitch")
+            .expect(200)
+            .then((response) => {
+                const rows = response.body.rows;
+                expect(rows.length).toEqual(12);
+                rows.forEach((row) => {
+                    expect(row.topic).toBe("mitch");
+                });
+            });
+    });
+    test("200: Gets an array of data based on matching topic, combined with sort", () => {
+        return request(app)
+            .get("/api/articles?topic=mitch&sort_by=votes")
+            .expect(200)
+            .then((response) => {
+                const rows = response.body.rows;
+                expect(rows.length).toEqual(12);
+                expect(rows).toBeSortedBy("votes", { descending: true });
+                rows.forEach((row) => {
+                    expect(row.topic).toBe("mitch");
+                });
+            });
+    });
+    test("200: Gets an array of data based on matching author, left to default sort (desc)", () => {
+        return request(app)
+            .get("/api/articles?author=icellusedkars")
+            .expect(200)
+            .then((response) => {
+                const rows = response.body.rows;
+                expect(rows.length).toEqual(6);
+                expect(rows).toBeSortedBy("created_at", { descending: true });
+                rows.forEach((row) => {
+                    expect(row.author).toBe("icellusedkars");
+                });
+            });
+    });
+    test("200: Gets an array of data based on matching topic & author, left to default sort (desc)", () => {
+        return request(app)
+            .get("/api/articles?topic=mitch&author=icellusedkars")
+            .expect(200)
+            .then((response) => {
+                const rows = response.body.rows;
+                console.log(rows);
+                expect(rows.length).toEqual(6);
+                expect(rows).toBeSortedBy("created_at", { descending: true });
+                rows.forEach((row) => {
+                    expect(row.topic).toBe("mitch");
+                    expect(row.author).toBe("icellusedkars");
+                });
+            });
+    });
+    describe("error test block:", () => {
+        test("404, unable to find matching author good input", () => {
+            return request(app)
+                .get("/api/articles?author=drew")
+                .expect(404)
+                .then((response) => {
+                    expect(response.body).toEqual({ msg: "No matching articles found", detail: "Some additonal detail here" });
+                });
+        });
+        test("400, request to sort by a junk column that does not exist", () => {
+            return request(app)
+                .get("/api/articles?sort_by=drew")
+                .expect(400)
+                .then((response) => {
+                    expect(response.body).toEqual({ msg: "Bad request", detail: "Not possible to sort by column: [drew]" });
                 });
         });
     });
