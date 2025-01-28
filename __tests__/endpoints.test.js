@@ -17,13 +17,11 @@ describe("GET /api/topics", () => {
             .expect(200)
             .then((response) => {
                 const rows = response.body;
-                if (rows.length > 0) {
-                    expect(rows.length).toEqual(3);
-                    rows.forEach((row) => {
-                        expect(row).toHaveProperty("slug");
-                        expect(row).toHaveProperty("description");
-                    });
-                }
+                expect(rows.length).toEqual(3);
+                rows.forEach((row) => {
+                    expect(row).toHaveProperty("slug");
+                    expect(row).toHaveProperty("description");
+                });
             });
     });
 });
@@ -34,7 +32,15 @@ describe("GET /api/articles/1", () => {
             .get("/api/articles/1")
             .expect(200)
             .then((response) => {
-                expect(response.body.length).toEqual(1);
+                const article = response.body;
+                expect(article).toHaveProperty("article_id");
+                expect(article).toHaveProperty("article_img_url");
+                expect(article).toHaveProperty("author");
+                expect(article).toHaveProperty("body");
+                expect(article).toHaveProperty("created_at");
+                expect(article).toHaveProperty("title");
+                expect(article).toHaveProperty("topic");
+                expect(article).toHaveProperty("votes");
             });
     });
     test("200: responds with article ID #12", () => {
@@ -42,10 +48,15 @@ describe("GET /api/articles/1", () => {
             .get("/api/articles/12")
             .expect(200)
             .then((response) => {
-                expect(response.body.length).toEqual(1);
-                response.body.forEach((row) => {
-                    expect(row.article_id).toBe(12);
-                });
+                const article = response.body;
+                expect(article).toHaveProperty("article_id");
+                expect(article).toHaveProperty("article_img_url");
+                expect(article).toHaveProperty("author");
+                expect(article).toHaveProperty("body");
+                expect(article).toHaveProperty("created_at");
+                expect(article).toHaveProperty("title");
+                expect(article).toHaveProperty("topic");
+                expect(article).toHaveProperty("votes");
             });
     });
     describe("error test block:", () => {
