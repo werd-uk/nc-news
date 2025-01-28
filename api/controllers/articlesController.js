@@ -14,4 +14,9 @@ exports.getArticleByID = (req, res, next) => {
         });
 };
 
-exports.getArticles = () => {};
+exports.getArticles = (req, res, next) => {
+    const { order, sort_by, where } = req.query;
+    return selectArticles(where, order, sort_by).then((response) => {
+        res.status(200).send(response.rows);
+    });
+};
