@@ -187,7 +187,7 @@ describe("GET /api/articles", () => {
                 .get("/api/articles?sort_by=drew")
                 .expect(400)
                 .then((response) => {
-                    expect(response.body).toEqual({ msg: "Bad request", detail: "Not possible to sort by column: [drew]" });
+                    expect(response.body).toEqual({ msg: "Bad request", detail: "Not possible to sort by column: [drew] DESC" });
                 });
         });
     });
