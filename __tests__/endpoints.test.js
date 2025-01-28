@@ -1,10 +1,8 @@
-const endpointsJson = require("../endpoints.json");
 const request = require("supertest");
 const app = require("../api/app");
 const seed = require("../db/seeds/seed");
 const db = require("../db/connection");
 const { topicData, commentData, articleData, userData } = require(`../db/data/test-data`);
-/* Set up your test imports here */
 
 beforeEach(() => seed({ topicData, commentData, articleData, userData }));
 afterAll(() => db.end());
@@ -25,7 +23,6 @@ describe("GET /api/topics", () => {
                         expect(row).toHaveProperty("slug");
                         expect(row).toHaveProperty("description");
                     });
-                    console.table(rows);
                 }
             });
     });
