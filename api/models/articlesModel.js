@@ -36,9 +36,7 @@ exports.selectArticles = async (where, order = "DESC", sort_by = "created_at") =
         }
         if (where.author) {
             if (whereArgs.length > 0) {
-                console.log(whereArgs.length, "line 39");
                 sqlQuery += " AND a.author = $" + (whereArgs.length + 1);
-
                 whereArgs.push(where.author);
             } else {
                 sqlQuery += "a.author = $" + (whereArgs.length + 1);

@@ -88,7 +88,7 @@ describe("GET /api/articles", () => {
             .get("/api/articles")
             .expect(200)
             .then((response) => {
-                const rows = response.body;
+                const rows = response.body.rows;
                 expect(rows.length).toEqual(13);
                 rows.forEach((row) => {
                     expect(row).toHaveProperty("author");
@@ -106,7 +106,7 @@ describe("GET /api/articles", () => {
             .get("/api/articles?sort_by=comment_count&order=DESC")
             .expect(200)
             .then((response) => {
-                const rows = response.body;
+                const rows = response.body.rows;
                 expect(rows.length).toEqual(13);
                 expect(rows).toBeSortedBy("comment_count", { descending: true });
                 rows.forEach((row) => {
@@ -125,7 +125,7 @@ describe("GET /api/articles", () => {
             .get("/api/articles?topic=mitch")
             .expect(200)
             .then((response) => {
-                const rows = response.body;
+                const rows = response.body.rows;
                 expect(rows.length).toEqual(12);
                 rows.forEach((row) => {
                     expect(row.topic).toBe("mitch");
@@ -137,7 +137,7 @@ describe("GET /api/articles", () => {
             .get("/api/articles?topic=mitch&sort_by=votes")
             .expect(200)
             .then((response) => {
-                const rows = response.body;
+                const rows = response.body.rows;
                 expect(rows.length).toEqual(12);
                 expect(rows).toBeSortedBy("votes", { descending: true });
                 rows.forEach((row) => {
@@ -150,7 +150,7 @@ describe("GET /api/articles", () => {
             .get("/api/articles?author=icellusedkars")
             .expect(200)
             .then((response) => {
-                const rows = response.body;
+                const rows = response.body.rows;
                 expect(rows.length).toEqual(6);
                 expect(rows).toBeSortedBy("created_at", { descending: true });
                 rows.forEach((row) => {
@@ -163,7 +163,8 @@ describe("GET /api/articles", () => {
             .get("/api/articles?topic=mitch&author=icellusedkars")
             .expect(200)
             .then((response) => {
-                const rows = response.body;
+                const rows = response.body.rows;
+                console.log(rows);
                 expect(rows.length).toEqual(6);
                 expect(rows).toBeSortedBy("created_at", { descending: true });
                 rows.forEach((row) => {
@@ -173,12 +174,11 @@ describe("GET /api/articles", () => {
             });
     });
     describe("error test block:", () => {
-        test.only("404, unable to find matching author good input", () => {
+        test("404, unable to find matching author good input", () => {
             return request(app)
                 .get("/api/articles?author=drew")
                 .expect(404)
                 .then((response) => {
-                    console.log(response);
                     expect(response.body).toEqual({ msg: "No matching articles found", detail: "Some additonal detail here" });
                 });
         });
