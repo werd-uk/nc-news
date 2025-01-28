@@ -120,4 +120,67 @@ describe("GET /api/articles", () => {
                 });
             });
     });
+    test("200: Gets an array of data based on matching topic", () => {
+        return request(app)
+            .get("/api/articles?topic=mitch")
+            .expect(200)
+            .then((response) => {
+                const rows = response.body;
+                expect(rows.length).toEqual(12);
+                rows.forEach((row) => {
+                    expect(row.topic).toBe("mitch");
+                });
+            });
+    });
+    test("200: Gets an array of data based on matching topic, combined with sort", () => {
+        return request(app)
+            .get("/api/articles?topic=mitch&sort_by=votes")
+            .expect(200)
+            .then((response) => {
+                const rows = response.body;
+                expect(rows.length).toEqual(12);
+                expect(rows).toBeSortedBy("votes", { descending: true });
+                rows.forEach((row) => {
+                    expect(row.topic).toBe("mitch");
+                });
+            });
+    });
+    test("200: Gets an array of data based on matching author, left to default sort (desc)", () => {
+        return request(app)
+            .get("/api/articles?author=icellusedkars")
+            .expect(200)
+            .then((response) => {
+                const rows = response.body;
+                expect(rows.length).toEqual(6);
+                expect(rows).toBeSortedBy("created_at", { descending: true });
+                rows.forEach((row) => {
+                    expect(row.author).toBe("icellusedkars");
+                });
+            });
+    });
+    test("200: Gets an array of data based on matching topic & author, left to default sort (desc)", () => {
+        return request(app)
+            .get("/api/articles?topic=mitch&author=icellusedkars")
+            .expect(200)
+            .then((response) => {
+                const rows = response.body;
+                expect(rows.length).toEqual(6);
+                expect(rows).toBeSortedBy("created_at", { descending: true });
+                rows.forEach((row) => {
+                    expect(row.topic).toBe("mitch");
+                    expect(row.author).toBe("icellusedkars");
+                });
+            });
+    });
+    describe("error test block:", () => {
+        test.only("404, unable to find matching author good input", () => {
+            return request(app)
+                .get("/api/articles?author=drew")
+                .expect(404)
+                .then((response) => {
+                    console.log(response);
+                    expect(response.body).toEqual({ msg: "No matching articles found", detail: "Some additonal detail here" });
+                });
+        });
+    });
 });
