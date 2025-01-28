@@ -1,9 +1,8 @@
 const endpointsJson = require("../endpoints.json");
 const request = require("supertest");
+
 const app = require("../api/app");
 /* Set up your test imports here */
-
-afterAll(() => db.end());
 
 /* Set up your beforeEach & afterAll functions here */
 
