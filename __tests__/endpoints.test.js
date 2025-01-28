@@ -182,5 +182,13 @@ describe("GET /api/articles", () => {
                     expect(response.body).toEqual({ msg: "No matching articles found", detail: "Some additonal detail here" });
                 });
         });
+        test("400, request to sort by a junk column that does not exist", () => {
+            return request(app)
+                .get("/api/articles?sort_by=drew")
+                .expect(400)
+                .then((response) => {
+                    expect(response.body).toEqual({ msg: "Bad request", detail: "Not possible to sort by column: [drew]" });
+                });
+        });
     });
 });
