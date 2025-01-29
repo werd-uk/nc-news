@@ -1,8 +1,10 @@
+const hljs = require("highlight.js")
+
 # Northcoders News API
 
 ## Project Initialisation :clapper:
 
-1. Run `npm install` to pull in dependencies (inc. dev dependencies).
+1. Run `npm install` to pull in dependencies (inc. dev dependencies), ensure your `package.json` file contains the correct packages:
 
 ```json
  "devDependencies": {
@@ -16,9 +18,20 @@
     "dependencies": {
         "express": "^4.21.2",
         "pg": "^8.7.3"
+    }
 ```
 
-2. Create two environment variables files (e.g. `.env.*ENVIRONMENT_NAME*` ) for test and development databases into `PGDATABASE` variable.
+2. Create two environment variables files (e.g. `.env.ENVIRONMENT_NAME` ) for test and development databases into `PGDATABASE` variable.
+
+```js
+// for test environment
+// filename: .env.test
+PGDATABASE = your_db_name_test; // ⬅️ File contents
+
+// for dev environment
+// filename: .env.development
+PGDATABASE = your_db_name; // ⬅️ File contents
+```
 
 ---
 
