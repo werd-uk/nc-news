@@ -7,15 +7,17 @@ const hljs = require("highlight.js")
 1. Run `npm install` to pull in dependencies (inc. dev dependencies), ensure your `package.json` file contains the correct packages:
 
 ```json
- "devDependencies": {
+    "devDependencies": {
         "dotenv": "^16.4.7",
         "husky": "^8.0.2",
         "jest": "^27.5.1",
         "jest-extended": "^2.0.0",
         "pg-format": "^1.0.4",
+        "jest-sorted": "^1.0.15",
         "supertest": "^7.0.0"
     },
     "dependencies": {
+        "nodemon": "^3.1.9",
         "express": "^4.21.2",
         "pg": "^8.7.3"
     }
