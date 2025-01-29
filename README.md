@@ -1,5 +1,3 @@
-const hljs = require("highlight.js")
-
 # Northcoders News API
 
 ## Project Initialisation :clapper:
