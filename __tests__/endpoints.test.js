@@ -238,7 +238,6 @@ describe("POST /api/articles/:article_id/comments", () => {
             .expect(201)
             .then((response) => {
                 const comment = response.body.posted[0];
-                console.log(comment);
                 expect(comment.body).toEqual(testObject.body);
             });
     });
