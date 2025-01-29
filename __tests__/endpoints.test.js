@@ -192,3 +192,21 @@ describe("GET /api/articles", () => {
         });
     });
 });
+
+describe.only("GET /api/articles/:article_id/comments", () => {
+    test("200: Gets a successful response from the endpoint", () => {
+        return request(app).get("/api/articles/1/comments").expect(200);
+    });
+    test("200: Gets an array of data from the endpoint", () => {
+        return request(app)
+            .get("/api/articles/1/comments")
+            .expect(200)
+            .then((response) => {
+                const rows = response.body.rows;
+                expect(rows.length).toEqual(11);
+                rows.forEach((row) => {
+                    expect(row.article_id).toBe(1);
+                });
+            });
+    });
+});
