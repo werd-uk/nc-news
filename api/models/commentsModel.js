@@ -26,7 +26,7 @@ exports.insertCommentByArticleID = (articleID, request) => {
                         } else {
                             const sqlQuery = "INSERT INTO comments (body, votes, author, article_id) VALUES ($1, $2, $3, $4) RETURNING body;";
                             return db.query(sqlQuery, [body, 0, username, articleID]).then((response) => {
-                                return { inserted: response.rows };
+                                return { posted: response.rows };
                             });
                         }
                     })
