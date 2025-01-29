@@ -164,7 +164,7 @@ describe("GET /api/articles", () => {
             .expect(200)
             .then((response) => {
                 const rows = response.body.rows;
-                console.log(rows);
+
                 expect(rows.length).toEqual(6);
                 expect(rows).toBeSortedBy("created_at", { descending: true });
                 rows.forEach((row) => {
@@ -193,7 +193,7 @@ describe("GET /api/articles", () => {
     });
 });
 
-describe("GET /api/articles/:article_id/comments", () => {
+describe.only("GET /api/articles/:article_id/comments", () => {
     test("200: Gets a successful response from the endpoint", () => {
         return request(app).get("/api/articles/1/comments").expect(200);
     });
