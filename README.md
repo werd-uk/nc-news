@@ -12,13 +12,13 @@
         "jest-extended": "^2.0.0",
         "pg-format": "^1.0.4",
         "jest-sorted": "^1.0.15",
+        "nodemon": "^3.1.9",
         "supertest": "^7.0.0"
     },
     "dependencies": {
-        "nodemon": "^3.1.9",
         "express": "^4.21.2",
         "pg": "^8.7.3"
-    }
+    },
 ```
 
 2. Create two environment variables files (e.g. `.env.ENVIRONMENT_NAME` ) for test and development databases into `PGDATABASE` variable.
