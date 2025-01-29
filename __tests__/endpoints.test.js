@@ -193,20 +193,39 @@ describe("GET /api/articles", () => {
     });
 });
 
-describe.only("GET /api/articles/:article_id/comments", () => {
+describe("GET /api/articles/:article_id/comments", () => {
     test("200: Gets a successful response from the endpoint", () => {
         return request(app).get("/api/articles/1/comments").expect(200);
     });
-    test("200: Gets an array of data from the endpoint", () => {
+    test("200: GET the comments for article #1", () => {
         return request(app)
             .get("/api/articles/1/comments")
             .expect(200)
             .then((response) => {
-                const rows = response.body.rows;
-                expect(rows.length).toEqual(11);
-                rows.forEach((row) => {
-                    expect(row.article_id).toBe(1);
+                const comments = response.body.comments;
+                expect(comments.length).toEqual(11);
+                comments.forEach((comment) => {
+                    expect(comment.article_id).toBe(1);
                 });
             });
+    });
+    test("200: retrieves no data back, as article #99 doesn't exist", () => {
+        return request(app)
+            .get("/api/articles/99/comments")
+            .expect(200)
+            .then((response) => {
+                const comments = response.body.comments;
+                expect(comments.length).toEqual(0);
+            });
+    });
+    describe("error test block", () => {
+        test("400: Bad request, when given a duff id", () => {
+            return request(app)
+                .get("/api/articles/bad-article/comments")
+                .expect(400)
+                .then((response) => {
+                    expect(response.body).toEqual({ msg: "Bad request", detail: "Invalid article ID: bad-article" });
+                });
+        });
     });
 });
