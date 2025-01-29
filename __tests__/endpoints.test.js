@@ -218,13 +218,46 @@ describe("GET /api/articles/:article_id/comments", () => {
                 expect(comments.length).toEqual(0);
             });
     });
-    describe("error test block", () => {
+    describe("error test block:", () => {
         test("400: Bad request, when given a duff id", () => {
             return request(app)
                 .get("/api/articles/bad-article/comments")
                 .expect(400)
                 .then((response) => {
                     expect(response.body).toEqual({ msg: "Bad request", detail: "Invalid article ID: bad-article" });
+                });
+        });
+    });
+});
+describe("POST /api/articles/:article_id/comments", () => {
+    test("201: Comment Created", () => {
+        testObject = { body: "Test Comment", username: "lurker" };
+        return request(app)
+            .post("/api/articles/2/comments")
+            .send(testObject)
+            .expect(201)
+            .then((response) => {
+                const comment = response.body.inserted[0];
+                expect(comment.body).toEqual(testObject.body);
+            });
+    });
+    describe("error test block:", () => {
+        test("400: incomplete request in body", () => {
+            return request(app)
+                .post("/api/articles/4/comments")
+                .expect(400)
+                .then((response) => {
+                    expect(response.body).toEqual({ msg: "Bad request", detail: "Incomplete or malformed request" });
+                });
+        });
+        test("403: trying to create a comment for user not in db", () => {
+            testObject = { body: "Test Comment by unknown user", username: "unknownuser" };
+            return request(app)
+                .post("/api/articles/7/comments")
+                .send(testObject)
+                .expect(403)
+                .then((response) => {
+                    expect(response.body).toEqual({ msg: "Forbidden", detail: "unknownuser does not exist." });
                 });
         });
     });
