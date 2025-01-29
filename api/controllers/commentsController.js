@@ -1,4 +1,4 @@
-const { selectCommentsByArticleID } = require("../models/commentsModel");
+const { selectCommentsByArticleID, insertCommentByArticleID } = require("../models/commentsModel");
 
 exports.getCommentsByArticleID = (req, res, next) => {
     return selectCommentsByArticleID(req.params.article_id)
@@ -9,10 +9,9 @@ exports.getCommentsByArticleID = (req, res, next) => {
 };
 
 exports.postCommentByArticleID = (req, res, next) => {
-    console.log(body);
     return insertCommentByArticleID(req.params.article_id, req.body)
         .then((response) => {
-            return response.rows;
+            return res.status(201).send(response);
         })
         .catch((err) => next(err));
 };
