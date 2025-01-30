@@ -22,8 +22,6 @@ Project progress:
 
 [![node.js](https://img.shields.io/badge/node.js-v22.12.0-417e38?style=flat-square&logo=node.js)](https://nodejs.org/en/download) [![postgreSQL](https://img.shields.io/badge/postgreSQL-v16.6.0-4169E1?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org/download/linux/ubuntu/) [![express.js](https://img.shields.io/badge/express.js-v4.21.2-000000?style=flat-square&logo=postgresql&logoColor=white)](https://expressjs.com/) [![node-postgres](https://img.shields.io/badge/node--postgres-8.7.3-blue?style=flat-square)](https://node-postgres.com/) [![dotenv](https://img.shields.io/badge/.ENV-8.7.3-ECD53F?style=flat-square&logo=.ENV&logoColor=white)](https://www.npmjs.com/package/dotenv)
 
----
-
 ### Want to take this project a different way?
 
 If you fancy standing on the shoulders of giants, you can by all means fork this repository, and start your greatness from there on in.
@@ -40,8 +38,6 @@ A few things to check first:
     -   There's loads of ways to do this, so here's a guide: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github
 
 ### `Git` `Clone` > Do Your Work > `Add` > `Commit` > `Push` > ... Repeat
-
----
 
 Now your copy of `/werd-uk/nc-news` project and now you want to get it on your machine to start coding.
 
@@ -74,7 +70,6 @@ Run `npm install` to pull in dependencies (inc. dev dependencies), ensure your `
 package.json:
 
 ```json
-...
     "dependencies": {
         "dotenv": "^16.4.7",
         "express": "^4.21.2",
@@ -89,7 +84,6 @@ package.json:
         "nodemon": "^3.1.9",
         "supertest": "^7.0.0"
     }
-...
 ```
 
 ### Building local environements
@@ -117,14 +111,12 @@ This repository contains seed data for you to run tests against, retrieve via th
 package.json:
 
 ```json
-...
  "scripts": {
         "setup-dbs": "psql -f ./db/setup.sql",
         "seed": "node ./db/seeds/run-seed.js",
         "seed-dev": "NODE_ENV=development node ./db/seeds/run-seed.js",
         "seed-prod": "NODE_ENV=production node ./db/seeds/run-seed.js",
     }
-...
 ```
 
 ### Seed Data locations with Commands
@@ -137,7 +129,7 @@ package.json:
 
 ## Got a question?
 
-Feel free to get in touch by submitting a question: </br> [![issues](https://img.shields.io/github/issues/werd-uk/nc-news?style=for-the-badge)](https://github.com/werd-uk/nc-news/issues/new?template=question-about--nc-news.md)
+Feel free to get in touch by submitting a question: </br> </br>[![issues](https://img.shields.io/github/issues/werd-uk/nc-news?style=for-the-badge)](https://github.com/werd-uk/nc-news/issues/new?template=question-about--nc-news.md)
 
 ---
 
