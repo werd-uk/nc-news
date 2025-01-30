@@ -46,5 +46,22 @@
                 "posted": { "body": "This article was so insightful, thanks for posting." }
             }
         }
+    },
+    "PATCH": {
+        "PATCH /api/articles/:article_id": {
+            "description": "amends the number of votes against a specified article",
+            "query": [],
+            "exampleResponse": {
+                "article": {
+                    "author": "weegembump",
+                    "title": "Seafood substitutions are increasing",
+                    "article_id": 4,
+                    "topic": "mitch",
+                    "votes": 99,
+                    "article_img_url": "https://giphy.com/ck83ojiaso978",
+                    "comment_count": 23
+                }
+            }
+        }
     }
 }
