@@ -11,8 +11,8 @@
         "prepare": "husky install",
         "test-listen": "NODE_ENV=test nodemon ./api/listen.js",
         "dev-listen": "NODE_ENV=development nodemon ./api/listen.js",
-        "start": "node listen.js",
-        "seed-prod": "NODE_ENV=production npm run seed"
+        "start": "node ./api/listen.js",
+        "seed-prod": "NODE_ENV=production node ./db/seeds/run-seed.js"
     },
     "repository": {
         "type": "git",

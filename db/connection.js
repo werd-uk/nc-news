@@ -11,7 +11,7 @@ if (!process.env.PGDATABASE && !process.env.DATABASE_URL) {
 
 if (ENV === "production") {
     config.max = 2;
-    config.connectionString = process.ENV.DATABASE_URL;
+    config.connectionString = process.env.DATABASE_URL;
 }
 
 module.exports = new Pool(config);
