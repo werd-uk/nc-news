@@ -325,3 +325,22 @@ describe("PATCH /api/articles/:article_id", () => {
         });
     });
 });
+
+describe("DELETE /api/comments/:comment_id", () => {
+    test("204: Successfully deleted comment", () => {
+        return request(app)
+            .delete("/api/comments/10")
+            .expect(204)
+            .then((response) => {
+                expect(response.body).toEqual({});
+            });
+    });
+    test("404: not able to delete non-existant comment", () => {
+        return request(app)
+            .delete("/api/comments/20")
+            .expect(404)
+            .then((response) => {
+                expect(response.body).toEqual({ msg: "Not found", detail: "Comment #20 does not exist." });
+            });
+    });
+});
