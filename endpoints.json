@@ -36,6 +36,13 @@
                     { "comment_id": 1, "votes": 38, "created_at": "2020-05-29T05:23:10.122Z", "author": "weegembump", "body": "<3 this post. Thank you.", "article_id": 1 }
                 ]
             }
+        },
+        "GET /api/users": {
+            "description": "lists all users registered on the site",
+            "queries": [],
+            "exampleResponse": {
+                "users": [{ "username": "super_keith", "name": "Keith", "avatar": "https://some.url/path/image.jpg" }]
+            }
         }
     },
     "POST": {
