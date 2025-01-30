@@ -78,6 +78,7 @@ describe("GET methods", () => {
                     expect(article).toHaveProperty("title");
                     expect(article).toHaveProperty("topic");
                     expect(article).toHaveProperty("votes");
+                    expect(article).toHaveProperty("comment_count");
                 });
         });
         describe("error test block:", () => {
