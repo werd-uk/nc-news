@@ -21,7 +21,7 @@
     },
 ```
 
-2. Create two environment variables files (e.g. `.env.ENVIRONMENT_NAME` ) for test and development databases into `PGDATABASE` variable.
+2. Create two environment variable files (e.g. `.env.ENVIRONMENT_NAME` ) for test and development databases into `PGDATABASE` variable.
 
 ```js
 // for test environment
