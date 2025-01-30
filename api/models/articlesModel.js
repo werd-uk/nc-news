@@ -1,13 +1,15 @@
 const db = require("../../db/connection");
 
 exports.selectArticleByID = (articleID) => {
-    let sqlQuery = "SELECT author, title, body, article_id, topic, created_at, votes, article_img_url FROM articles";
-
+    let sqlQuery = "SELECT a.author, a.title, a.body, a.article_id, a.topic, a.created_at, a.votes, a.article_img_url, count(c.comment_id)::INT AS comment_count FROM articles as a";
+    sqlQuery += " LEFT JOIN comments AS c on a.article_id = c.article_id";
     const args = [];
     if (articleID) {
-        sqlQuery += " WHERE article_id = $1";
+        sqlQuery += " WHERE a.article_id = $1";
         args.push(articleID);
     }
+    sqlQuery += " GROUP BY a.author, a.title, a.body, a.article_id, a.topic, a.created_at, a.votes, a.article_img_url";
+
     return db.query(sqlQuery, args).then((response) => {
         if (response.rows.length === 0) {
             return Promise.reject({ status: 404, msg: "No article found", detail: "Article #" + articleID + " does not exist" });
