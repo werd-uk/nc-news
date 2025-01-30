@@ -1,4 +1,4 @@
-const { selectUserName } = require("./models/userModel.js");
+const { selectUserName } = require("./models/usersModel.js");
 
 exports.userNameExists = (username) => {
     return selectUserName(username)
