@@ -86,7 +86,7 @@ package.json:
     }
 ```
 
-### Building local environements
+### Building local environments
 
 Create two environment variable files (e.g. `.env.ENVIRONMENT_NAME` ) for test and development databases into `PGDATABASE` variable.
 
