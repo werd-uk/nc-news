@@ -5,3 +5,9 @@ exports.selectUserName = (username) => {
         return { user: response.rows };
     });
 };
+
+exports.selectUsers = () => {
+    return db.query("SELECT * FROM users").then((response) => {
+        return { users: response.rows };
+    });
+};
