@@ -262,3 +262,66 @@ describe("POST /api/articles/:article_id/comments", () => {
         });
     });
 });
+describe("PATCH /api/articles/:article_id", () => {
+    test("202: Accepted - updated votes by 100", () => {
+        return request(app)
+            .patch("/api/articles/1")
+            .send({ int_votes: 100 })
+            .expect(202)
+            .then((response) => {
+                const updatedArticle = response.body.article[0];
+                expect(updatedArticle.votes).toEqual(200);
+            });
+    });
+    test("202: Accepted - reduced votes by 100", () => {
+        return request(app)
+            .patch("/api/articles/1")
+            .send({ int_votes: -99 })
+            .expect(202)
+            .then((response) => {
+                const updatedArticle = response.body.article[0];
+                expect(updatedArticle.votes).toEqual(1);
+            });
+    });
+    test("202: Accepted - reduced votes by 101 (more than allocated)", () => {
+        return request(app)
+            .patch("/api/articles/1")
+            .send({ int_votes: -101 })
+            .expect(202)
+            .then((response) => {
+                const updatedArticle = response.body.article[0];
+                expect(updatedArticle.votes).toEqual(-1);
+            });
+    });
+    describe("error test block:", () => {
+        test("400: int_votes not correctly provided, valid article", () => {
+            return request(app)
+                .patch("/api/articles/1")
+                .send({ inc_votes: 123 }) // deliberate typo
+                .expect(400)
+                .then((response) => {
+                    expect(response.body).toEqual({ msg: "Bad Request", detail: "No integer provided to increment votes by." });
+                });
+        });
+
+        test("400: int_votes not correctly provided, valid article", () => {
+            return request(app)
+                .patch("/api/articles/4")
+                .send({ int_votes: "twenty votes" })
+                .expect(400)
+                .then((response) => {
+                    expect(response.body).toEqual({ msg: "Bad Request", detail: "No integer provided to increment votes by." });
+                });
+        });
+
+        test("404: unable to apply vote change to non-existant article", () => {
+            return request(app)
+                .patch("/api/articles/999")
+                .send({ int_votes: 123 })
+                .expect(404)
+                .then((response) => {
+                    expect(response.body).toEqual({ msg: "No article found", detail: "Article #999 does not exist" });
+                });
+        });
+    });
+});

@@ -2,6 +2,7 @@ const db = require("../../db/connection");
 
 exports.selectArticleByID = (articleID) => {
     let sqlQuery = "SELECT author, title, body, article_id, topic, created_at, votes, article_img_url FROM articles";
+
     const args = [];
     if (articleID) {
         sqlQuery += " WHERE article_id = $1";
@@ -59,4 +60,18 @@ exports.selectArticles = async (where, order = "DESC", sort_by = "created_at") =
             return { rows: response.rows };
         }
     });
+};
+
+exports.updateArticleVotes = (article_id, voteChange) => {
+    if (voteChange && typeof voteChange === "number") {
+        return this.selectArticleByID(article_id).then((response) => {
+            const articleVotes = response.rows[0].votes;
+            const newVoteCount = articleVotes + voteChange;
+            return db.query("UPDATE articles SET votes = $1 WHERE article_id = $2 RETURNING *;", [newVoteCount, article_id]).then((response) => {
+                return { article: response.rows };
+            });
+        });
+    } else {
+        return Promise.reject({ status: 400, msg: "Bad Request", detail: "No integer provided to increment votes by." });
+    }
 };
