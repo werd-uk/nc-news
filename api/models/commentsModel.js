@@ -18,6 +18,7 @@ exports.selectCommentsByArticleID = (articleID) => {
 
 exports.insertCommentByArticleID = (articleID, request) => {
     const { username, body } = request;
+
     if (username && body) {
         return userNameExists(username).then((bool) => {
             if (bool) {
