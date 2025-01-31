@@ -17,7 +17,7 @@ exports.postCommentByArticleID = (req, res, next) => {
 };
 exports.removeCommentByID = (req, res, next) => {
     return deleteCommentByID(req.params.comment_id)
-        .then((response) => {
+        .then(() => {
             return res.status(204).send({});
         })
         .catch((err) => next(err));

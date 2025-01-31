@@ -19,18 +19,16 @@ exports.insertCommentByArticleID = (articleID, request) => {
     if (username && body) {
         return userNameExists(username).then((bool) => {
             if (bool) {
-                return selectArticleByID(articleID)
-                    .then((response) => {
-                        if (response.rows.length === 0) {
-                            return Promise.reject({ status: 404, msg: "Not found", detail: `Article #${articleID} does not exist, cannot post a comment there.` });
-                        } else {
-                            const sqlQuery = "INSERT INTO comments (body, votes, author, article_id) VALUES ($1, $2, $3, $4) RETURNING body;";
-                            return db.query(sqlQuery, [body, 0, username, articleID]).then((response) => {
-                                return { posted: response.rows };
-                            });
-                        }
-                    })
-                    .catch((err) => {});
+                return selectArticleByID(articleID).then((response) => {
+                    if (response.rows.length === 0) {
+                        return Promise.reject({ status: 404, msg: "Not found", detail: `Article #${articleID} does not exist, cannot post a comment there.` });
+                    } else {
+                        const sqlQuery = "INSERT INTO comments (body, votes, author, article_id) VALUES ($1, $2, $3, $4) RETURNING body;";
+                        return db.query(sqlQuery, [body, 0, username, articleID]).then((response) => {
+                            return { posted: response.rows };
+                        });
+                    }
+                });
             } else {
                 return Promise.reject({ status: 403, msg: "Forbidden", detail: `${username} does not exist.` });
             }

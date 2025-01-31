@@ -255,7 +255,7 @@ describe("GET methods", () => {
 describe("POST methods", () => {
     describe("/api/articles/:article_id/comments", () => {
         test("201: Comment Created", () => {
-            testObject = { body: "Test Comment", username: "lurker" };
+            const testObject = { body: "Test Comment", username: "lurker" };
             return request(app)
                 .post("/api/articles/2/comments")
                 .send(testObject)
@@ -275,7 +275,7 @@ describe("POST methods", () => {
                     });
             });
             test("403: trying to create a comment for user not in db", () => {
-                testObject = { body: "Test Comment by unknown user", username: "unknownuser" };
+                const testObject = { body: "Test Comment by unknown user", username: "unknownuser" };
                 return request(app)
                     .post("/api/articles/7/comments")
                     .send(testObject)
