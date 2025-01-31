@@ -44,13 +44,7 @@ exports.deleteCommentByID = (commentID) => {
             if (response.rows.length === 0) {
                 return Promise.reject({ status: 404, msg: "Not found", detail: `Comment #${commentID} does not exist.` });
             } else {
-                return db.query("DELETE FROM comments WHERE comment_id = $1 RETURNING *", [commentID]).then((response) => {
-                    if (response.rows.length === 1) {
-                        return Promise.resolve({ status: 204, msg: "Deleted succesfully", detail: `Comment #${response.rows[0].comment_id} has been deleted.` });
-                    } else {
-                        return Promise.reject({ status: 500, msg: "Delete Failed", detail: "Unable to delete the comment, as requested." });
-                    }
-                });
+                return db.query("DELETE FROM comments WHERE comment_id = $1 RETURNING *", [commentID]);
             }
         });
     } else {
