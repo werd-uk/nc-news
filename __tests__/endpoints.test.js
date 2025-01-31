@@ -355,12 +355,7 @@ describe("PATCH methods", () => {
 describe("DELETE methods", () => {
     describe("/api/comments/:comment_id", () => {
         test("204: Successfully deleted comment", () => {
-            return request(app)
-                .delete("/api/comments/10")
-                .expect(204)
-                .then((response) => {
-                    expect(response.body).toEqual({});
-                });
+            return request(app).delete("/api/comments/10").expect(204);
         });
         test("404: not able to delete non-existant comment", () => {
             return request(app)
@@ -368,6 +363,14 @@ describe("DELETE methods", () => {
                 .expect(404)
                 .then((response) => {
                     expect(response.body).toEqual({ msg: "Not found", detail: "Comment #20 does not exist." });
+                });
+        });
+        test("400: not able to delete invalid comment name", () => {
+            return request(app)
+                .delete("/api/comments/avacado")
+                .expect(400)
+                .then((response) => {
+                    expect(response.body).toEqual({ msg: "Bad request", detail: "avacado is not a valid comment identifier." });
                 });
         });
     });
