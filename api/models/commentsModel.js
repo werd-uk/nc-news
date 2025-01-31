@@ -22,16 +22,20 @@ exports.insertCommentByArticleID = (articleID, request) => {
     if (username && body) {
         return userNameExists(username).then((bool) => {
             if (bool) {
-                return selectArticleByID(articleID).then((response) => {
-                    if (response.rows.length === 0) {
-                        return Promise.reject({ status: 404, msg: "Not found", detail: `Article #${articleID} does not exist, cannot post a comment there.` });
-                    } else {
-                        const sqlQuery = "INSERT INTO comments (body, votes, author, article_id) VALUES ($1, $2, $3, $4) RETURNING body;";
-                        return db.query(sqlQuery, [body, 0, username, articleID]).then((response) => {
-                            return { posted: response.rows };
-                        });
-                    }
-                });
+                return selectArticleByID(articleID)
+                    .then((response) => {
+                        if (response.rows.length === 0) {
+                            return Promise.reject({ status: 404, msg: "Not found", detail: `Article #${articleID} does not exist, cannot post a comment there.` });
+                        } else {
+                            const sqlQuery = "INSERT INTO comments (body, votes, author, article_id) VALUES ($1, $2, $3, $4) RETURNING body;";
+                            return db.query(sqlQuery, [body, 0, username, articleID]).then((response) => {
+                                return { posted: response.rows };
+                            });
+                        }
+                    })
+                    .catch((err) => {
+                        return Promise.reject({ status: 400, msg: "horrible error: " + err });
+                    });
             } else {
                 return Promise.reject({ status: 403, msg: "Forbidden", detail: `${username} does not exist.` });
             }
@@ -49,6 +53,20 @@ exports.deleteCommentByID = (commentID) => {
             } else {
                 return db.query("DELETE FROM comments WHERE comment_id = $1 RETURNING *", [commentID]);
             }
+        });
+    } else {
+        return Promise.reject({ status: 400, msg: "Bad request", detail: `${commentID} is not a valid comment identifier.` });
+    }
+};
+
+exports.updateVotesOnCommentID = (commentID, request) => {
+    const commentIsNumber = /\d+/.test(commentID);
+    if (commentIsNumber && typeof request.inc_votes === "number") {
+        return db.query("UPDATE comments SET votes = votes + $1 WHERE comment_id = $2 RETURNING *", [request.inc_votes, commentID]).then((response) => {
+            if (response.rowCount === 0) {
+                return Promise.reject({ status: 404, msg: "Not found", detail: `Comment #${commentID} does not exist.` });
+            }
+            return { comment: response.rows[0] };
         });
     } else {
         return Promise.reject({ status: 400, msg: "Bad request", detail: `${commentID} is not a valid comment identifier.` });
