@@ -201,7 +201,7 @@ describe("GET methods", () => {
                     .get("/api/articles?author=drew")
                     .expect(404)
                     .then((response) => {
-                        expect(response.body).toEqual({ msg: "No matching articles found", detail: "Some additonal detail here" });
+                        expect(response.body).toEqual({ msg: "Not Found", detail: "No matching articles found." });
                     });
             });
             test("400, request to sort by a junk column that does not exist", () => {
@@ -228,12 +228,18 @@ describe("GET methods", () => {
                     expect(comments.length).toEqual(11);
                     comments.forEach((comment) => {
                         expect(comment.article_id).toBe(1);
+                        expect(comment).toHaveProperty("comment_id");
+                        expect(comment).toHaveProperty("votes");
+                        expect(comment).toHaveProperty("created_at");
+                        expect(comment).toHaveProperty("author");
+                        expect(comment).toHaveProperty("article_id");
+                        expect(comment).toHaveProperty("body");
                     });
                 });
         });
-        test("200: retrieves no data back, as article #99 doesn't exist", () => {
+        test("200: GET the comments for article #2, should be empty", () => {
             return request(app)
-                .get("/api/articles/99/comments")
+                .get("/api/articles/2/comments")
                 .expect(200)
                 .then((response) => {
                     const comments = response.body.comments;
@@ -241,6 +247,14 @@ describe("GET methods", () => {
                 });
         });
         describe("error test block:", () => {
+            test("404: not gound returned, as article #99 doesn't exist", () => {
+                return request(app)
+                    .get("/api/articles/99/comments")
+                    .expect(404)
+                    .then((response) => {
+                        expect(response.body).toEqual({ msg: "No article found", detail: "Article #99 does not exist" });
+                    });
+            });
             test("400: Bad request, when given a duff id", () => {
                 return request(app)
                     .get("/api/articles/bad-article/comments")
@@ -293,7 +307,7 @@ describe("PATCH methods", () => {
             return request(app)
                 .patch("/api/articles/1")
                 .send({ int_votes: 100 })
-                .expect(202)
+                .expect(200)
                 .then((response) => {
                     const updatedArticle = response.body.article[0];
                     expect(updatedArticle.votes).toEqual(200);
@@ -303,7 +317,7 @@ describe("PATCH methods", () => {
             return request(app)
                 .patch("/api/articles/1")
                 .send({ int_votes: -99 })
-                .expect(202)
+                .expect(200)
                 .then((response) => {
                     const updatedArticle = response.body.article[0];
                     expect(updatedArticle.votes).toEqual(1);
@@ -313,7 +327,7 @@ describe("PATCH methods", () => {
             return request(app)
                 .patch("/api/articles/1")
                 .send({ int_votes: -101 })
-                .expect(202)
+                .expect(200)
                 .then((response) => {
                     const updatedArticle = response.body.article[0];
                     expect(updatedArticle.votes).toEqual(-1);
@@ -355,12 +369,7 @@ describe("PATCH methods", () => {
 describe("DELETE methods", () => {
     describe("/api/comments/:comment_id", () => {
         test("204: Successfully deleted comment", () => {
-            return request(app)
-                .delete("/api/comments/10")
-                .expect(204)
-                .then((response) => {
-                    expect(response.body).toEqual({});
-                });
+            return request(app).delete("/api/comments/10").expect(204);
         });
         test("404: not able to delete non-existant comment", () => {
             return request(app)
@@ -368,6 +377,14 @@ describe("DELETE methods", () => {
                 .expect(404)
                 .then((response) => {
                     expect(response.body).toEqual({ msg: "Not found", detail: "Comment #20 does not exist." });
+                });
+        });
+        test("400: not able to delete invalid comment name", () => {
+            return request(app)
+                .delete("/api/comments/avacado")
+                .expect(400)
+                .then((response) => {
+                    expect(response.body).toEqual({ msg: "Bad request", detail: "avacado is not a valid comment identifier." });
                 });
         });
     });

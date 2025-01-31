@@ -32,7 +32,7 @@ exports.updateVotesByArticleID = (req, res, next) => {
 
     return updateArticleVotes(article_id, int_votes)
         .then((response) => {
-            return res.status(202).send(response);
+            return res.status(200).send(response);
         })
         .catch((err) => next(err));
 };
