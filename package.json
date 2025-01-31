@@ -1,18 +1,18 @@
 {
     "name": "be-nc-news",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "bc-nc-news",
     "main": "/api/listen.js",
     "scripts": {
         "setup-dbs": "psql -f ./db/setup.sql",
         "seed": "node ./db/seeds/run-seed.js",
         "seed-dev": "NODE_ENV=development node ./db/seeds/run-seed.js",
+        "seed-prod": "NODE_ENV=production node ./db/seeds/run-seed.js",
         "test": "jest",
         "prepare": "husky install",
         "test-listen": "NODE_ENV=test nodemon ./api/listen.js",
         "dev-listen": "NODE_ENV=development nodemon ./api/listen.js",
-        "start": "node ./api/listen.js",
-        "seed-prod": "NODE_ENV=production node ./db/seeds/run-seed.js"
+        "start": "node ./api/listen.js"
     },
     "repository": {
         "type": "git",
