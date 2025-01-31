@@ -228,12 +228,18 @@ describe("GET methods", () => {
                     expect(comments.length).toEqual(11);
                     comments.forEach((comment) => {
                         expect(comment.article_id).toBe(1);
+                        expect(comment).toHaveProperty("comment_id");
+                        expect(comment).toHaveProperty("votes");
+                        expect(comment).toHaveProperty("created_at");
+                        expect(comment).toHaveProperty("author");
+                        expect(comment).toHaveProperty("article_id");
+                        expect(comment).toHaveProperty("body");
                     });
                 });
         });
-        test("200: retrieves no data back, as article #99 doesn't exist", () => {
+        test("200: GET the comments for article #2, should be empty", () => {
             return request(app)
-                .get("/api/articles/99/comments")
+                .get("/api/articles/2/comments")
                 .expect(200)
                 .then((response) => {
                     const comments = response.body.comments;
@@ -241,6 +247,14 @@ describe("GET methods", () => {
                 });
         });
         describe("error test block:", () => {
+            test("404: not gound returned, as article #99 doesn't exist", () => {
+                return request(app)
+                    .get("/api/articles/99/comments")
+                    .expect(404)
+                    .then((response) => {
+                        expect(response.body).toEqual({ msg: "No article found", detail: "Article #99 does not exist" });
+                    });
+            });
             test("400: Bad request, when given a duff id", () => {
                 return request(app)
                     .get("/api/articles/bad-article/comments")
