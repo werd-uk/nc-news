@@ -7,7 +7,7 @@ exports.errorHandling = (err, req, res, next) => {
     }
 };
 
-exports.errorCatchAll = (err, req, res, next) => {
+exports.errorCatchAll = (err, req, res) => {
     // TODO: Build error handling, once you've built functions / endpoints
     if (err) {
         return res.status(500).send({ msg: "Server Error", detail: err });

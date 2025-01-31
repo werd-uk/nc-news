@@ -5,7 +5,7 @@ exports.userNameExists = (username) => {
         .then((response) => {
             return response.user.length === 1 ? true : false;
         })
-        .catch((err) => {
+        .catch(() => {
             return Promise.reject({ status: 500, msg: "Server error", detail: "Unable to check username: " + username });
         });
 };
