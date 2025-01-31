@@ -45,6 +45,33 @@ describe("GET methods", () => {
                     });
                 });
         });
+        test("200: Get specific existing user", () => {
+            return request(app)
+                .get("/api/users/butter_bridge")
+                .expect(200)
+                .then((response) => {
+                    const user = response.body.user;
+                    expect(user).toHaveProperty("username");
+                    expect(user).toHaveProperty("name");
+                    expect(user).toHaveProperty("avatar_url");
+                });
+        });
+        test("200: Get specific existing user", () => {
+            return request(app)
+                .get("/api/users/butter_bridge")
+                .expect(200)
+                .then((response) => {
+                    const user = response.body.user;
+                    expect(user).toHaveProperty("username");
+                    expect(user).toHaveProperty("name");
+                    expect(user).toHaveProperty("avatar_url");
+                });
+        });
+        describe("Error test block:", () => {
+            test.only("404: User not found", () => {
+                return request(app).get("/api/users/unknownuser").expect(404);
+            });
+        });
     });
 
     describe("/api/articles/:id", () => {
