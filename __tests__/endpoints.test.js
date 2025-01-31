@@ -68,7 +68,7 @@ describe("GET methods", () => {
                 });
         });
         describe("Error test block:", () => {
-            test.only("404: User not found", () => {
+            test("404: User not found", () => {
                 return request(app).get("/api/users/unknownuser").expect(404);
             });
         });
@@ -388,6 +388,49 @@ describe("PATCH methods", () => {
                     .expect(404)
                     .then((response) => {
                         expect(response.body).toEqual({ msg: "No article found", detail: "Article #999 does not exist" });
+                    });
+            });
+        });
+    });
+    describe("/api/comments/:comment_id", () => {
+        test("200: increment votes on comment", () => {
+            const updateVotesObject = { inc_votes: 10 };
+            return request(app)
+                .patch("/api/comments/1")
+                .send(updateVotesObject)
+                .expect(200)
+                .then((response) => {
+                    const comment = response.body.comment;
+                    expect(comment.votes).toEqual(26);
+                    expect(comment).toHaveProperty("body");
+                    expect(comment).toHaveProperty("author");
+                    expect(comment).toHaveProperty("article_id");
+                    expect(comment).toHaveProperty("created_at");
+                });
+        });
+        test("200: decrement votes on comment", () => {
+            const updateVotesObject = { inc_votes: -10 };
+            return request(app)
+                .patch("/api/comments/1")
+                .send(updateVotesObject)
+                .expect(200)
+                .then((response) => {
+                    const comment = response.body.comment;
+                    expect(comment.votes).toEqual(6);
+                    expect(comment).toHaveProperty("body");
+                    expect(comment).toHaveProperty("author");
+                    expect(comment).toHaveProperty("article_id");
+                    expect(comment).toHaveProperty("created_at");
+                });
+        });
+        describe("error test block:", () => {
+            test("404: comment_id doesn't exist", () => {
+                return request(app)
+                    .patch("/api/comments/234")
+                    .send({ inc_votes: 12 })
+                    .expect(404)
+                    .then((response) => {
+                        expect(response.body).toEqual({ msg: "Not found", detail: "Comment #234 does not exist." });
                     });
             });
         });
