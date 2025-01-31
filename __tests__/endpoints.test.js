@@ -201,7 +201,7 @@ describe("GET methods", () => {
                     .get("/api/articles?author=drew")
                     .expect(404)
                     .then((response) => {
-                        expect(response.body).toEqual({ msg: "No matching articles found", detail: "Some additonal detail here" });
+                        expect(response.body).toEqual({ msg: "Not Found", detail: "No matching articles found." });
                     });
             });
             test("400, request to sort by a junk column that does not exist", () => {
