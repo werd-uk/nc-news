@@ -61,8 +61,8 @@ exports.deleteCommentByID = (commentID) => {
 
 exports.updateVotesOnCommentID = (commentID, request) => {
     const commentIsNumber = /\d+/.test(commentID);
-    if (commentIsNumber && typeof request.inc_votes === "number") {
-        return db.query("UPDATE comments SET votes = votes + $1 WHERE comment_id = $2 RETURNING *", [request.inc_votes, commentID]).then((response) => {
+    if (commentIsNumber && typeof request.int_votes === "number") {
+        return db.query("UPDATE comments SET votes = votes + $1 WHERE comment_id = $2 RETURNING *", [request.int_votes, commentID]).then((response) => {
             if (response.rowCount === 0) {
                 return Promise.reject({ status: 404, msg: "Not found", detail: `Comment #${commentID} does not exist.` });
             }
