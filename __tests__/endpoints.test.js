@@ -394,7 +394,7 @@ describe("PATCH methods", () => {
     });
     describe("/api/comments/:comment_id", () => {
         test("200: increment votes on comment", () => {
-            const updateVotesObject = { inc_votes: 10 };
+            const updateVotesObject = { int_votes: 10 };
             return request(app)
                 .patch("/api/comments/1")
                 .send(updateVotesObject)
@@ -409,7 +409,7 @@ describe("PATCH methods", () => {
                 });
         });
         test("200: decrement votes on comment", () => {
-            const updateVotesObject = { inc_votes: -10 };
+            const updateVotesObject = { int_votes: -10 };
             return request(app)
                 .patch("/api/comments/1")
                 .send(updateVotesObject)
@@ -427,7 +427,7 @@ describe("PATCH methods", () => {
             test("404: comment_id doesn't exist", () => {
                 return request(app)
                     .patch("/api/comments/234")
-                    .send({ inc_votes: 12 })
+                    .send({ int_votes: 12 })
                     .expect(404)
                     .then((response) => {
                         expect(response.body).toEqual({ msg: "Not found", detail: "Comment #234 does not exist." });

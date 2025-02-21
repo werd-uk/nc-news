@@ -13,8 +13,8 @@ Project progress:
 -   [x] Build & seed databases
 -   [x] Build API endpoints
 -   [x] Host application on Render & Superbase
--   [ ] Make enhancements to APIs
--   [ ] Build front-end
+-   [x] Make enhancements to APIs
+-   [x] Build front-end [Now live!](https://nc-dread-it.netlify.app/)
 
 ## Getting started with this project
 
